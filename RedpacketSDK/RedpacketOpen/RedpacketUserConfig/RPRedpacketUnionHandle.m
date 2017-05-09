@@ -47,9 +47,11 @@
         
     }
     
-    return dic;
+    //  兼容新版
+    return [self newDictWithRedpacketModel:model
+                              isAckMessage:isAckMessage
+                                 andMutDic:dic];
 }
-
 
 //  生成通道中传输的Dict （新版本）
 + (NSDictionary *)dictWithRedpacketModel:(RPRedpacketModel *)model
@@ -57,8 +59,17 @@
 {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
+    return [self newDictWithRedpacketModel:model
+                              isAckMessage:isAckMessage
+                                 andMutDic:dic];
+}
+
++ (NSDictionary *)newDictWithRedpacketModel:(RPRedpacketModel *)model
+                               isAckMessage:(BOOL)isAckMessage
+                                  andMutDic:(NSMutableDictionary *)dic
+{
     if (isAckMessage) {
-    
+        
         //  红包被抢消息
         [dic setValue:@(YES) forKey:RedpacketKeyRedpacketTakenMessageSign];
         //  群组ID（环信IM CMD消息接收方需要根据这个入库）
@@ -84,10 +95,11 @@
         [dic setValue:model.greeting forKey:RedpacketKeyRedpacketGreeting];
         //  APP组织名称
         [dic setValue:@"云账户" forKey:RedpacketKeyRedpacketOrgName];
-
+        
     }
     
     return dic;
+
 }
 
 
@@ -126,6 +138,12 @@
                                                   andRedpacketSender:sender];
     
     return model;
+}
+
++ (BOOL)isRedpacketMessage:(NSDictionary *)dic
+{
+    BOOL isRedpacket = [dic[RedpacketKeyRedpacketSign] boolValue];
+    
 }
 
 @end
