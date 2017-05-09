@@ -198,8 +198,11 @@
     [dic setValue:@(YES) forKey:@"em_ignore_notification"];
     NSString *text = [NSString stringWithFormat:@"你领取了%@发的红包", messageModel.sender.userName];
     if (self.conversation.type == EMConversationTypeChat) {
+        
         [self sendTextMessage:text withExt:dic];
+        
     }else{
+        
         if ([senderId isEqualToString:currentUser]) {
             text = @"你领取了自己的红包";
         }else {

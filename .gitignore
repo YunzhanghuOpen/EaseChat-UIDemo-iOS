@@ -5,3 +5,6 @@ Pods
 Podfile.lock
 ChatDemo-UI3.0.xcodeproj
 ChatDemo-UI3.0.xcworkspace
+EaseUI/
+HyphenateFullSDK/
+HyphenateSDK/

@@ -12,6 +12,9 @@
 #import "RPRedpacketModel.h"
 #import "ChatDemoHelper.h"
 
+#import "RPRedpacketConstValues.h"
+
+
 /** 环信IMToken过期 */
 NSInteger const RedpacketEaseMobTokenOutDate = 20304;
 
@@ -201,5 +204,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     }
     return MessageCellTypeNoRedpacket;
 }
+
 
 @end
