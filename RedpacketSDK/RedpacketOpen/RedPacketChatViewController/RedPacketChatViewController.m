@@ -16,6 +16,7 @@
 #import "ChatDemoHelper.h"
 #import "UserProfileManager.h"
 //#import "UIImageView+WebCache.h"
+#import "RPRedpacketUnionHandle.h"
 
 /** 红包聊天窗口 */
 @interface RedPacketChatViewController () < EaseMessageCellDelegate,
@@ -179,7 +180,7 @@
 - (void)sendRedPacketMessage:(RPRedpacketModel *)model
 {
     NSMutableDictionary *mDic = [NSMutableDictionary new];
-    [mDic setDictionary:[model generateChannelDict]];
+    [mDic setDictionary:[RPRedpacketUnionHandle dictWithRedpacketModel:model isACKMessage:NO]];
     [mDic setObject:@(YES) forKey:@"is_money_msg"];//红包消息标识
     NSString *messageText = [NSString stringWithFormat:@"[%@]%@", @"红包", model.greeting];
     [self sendTextMessage:messageText withExt:mDic];
@@ -192,7 +193,7 @@
     NSString *senderId = messageModel.sender.userID;
     NSString *conversationId = self.conversation.conversationId;
     NSMutableDictionary *dic = [NSMutableDictionary new];
-    [dic setDictionary:[messageModel generateChannelDict]];
+    [dic setDictionary:[RPRedpacketUnionHandle dictWithRedpacketModel:messageModel isACKMessage:YES]];
     [dic setValue:@(YES) forKey:@"is_open_money_msg"];//红包被抢标识
     /** 忽略推送 */
     [dic setValue:@(YES) forKey:@"em_ignore_notification"];
@@ -291,7 +292,7 @@
 - (RPRedpacketModel *)toRedpacketMessageModel:(id <IMessageModel>)model
 {
     NSDictionary *dict = model.message.ext;
-    RPRedpacketModel *messageModel = [RPRedpacketModel generateRedpacketWithChannelDict:dict];
+    RPRedpacketModel *messageModel = [RPRedpacketUnionHandle modelWithChannelRedpacketDic1:dict andSender:[self profileEntityWith:model.message.from]];
     return messageModel;
 }
 

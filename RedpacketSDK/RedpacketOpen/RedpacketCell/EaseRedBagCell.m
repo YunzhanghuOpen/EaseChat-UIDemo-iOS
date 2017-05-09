@@ -11,6 +11,7 @@
 #import "RedpacketView.h"
 #import "RedPacketLuckView.h"
 #import "RPRedpacketModel.h"
+#import "RPRedpacketUnionHandle.h"
 
 @interface EaseRedBagCell()
 @property (nonatomic, strong) RedpacketView *redpacketView;
@@ -61,7 +62,7 @@
 - (void)updateCustomBubbleViewMargin:(UIEdgeInsets)bubbleMargin model:(id<IMessageModel>)model
 {
     _bubbleView.translatesAutoresizingMaskIntoConstraints = YES;
-    RPRedpacketModel *messageModel = [RPRedpacketModel generateRedpacketWithChannelDict:model.message.ext];
+    RPRedpacketModel *messageModel = [RPRedpacketUnionHandle modelWithChannelRedpacketDic1:model.message.ext andSender:nil];
     if (model.isSender) {
         if (messageModel.redpacketType == RPRedpacketTypeAmount) {
             _bubbleView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 175, 8, 116, 140);
@@ -79,7 +80,7 @@
 
 + (NSString *)cellIdentifierWithModel:(id<IMessageModel>)model
 {
-    RPRedpacketModel *messageModel = [RPRedpacketModel generateRedpacketWithChannelDict:model.message.ext];
+    RPRedpacketModel *messageModel = [RPRedpacketUnionHandle modelWithChannelRedpacketDic1:model.message.ext andSender:nil];
     if (messageModel.redpacketType == RPRedpacketTypeAmount) {
         return model.isSender ? @"__redPacketLuckCellSendIdentifier__" : @"__redPacketLuckCellReceiveIdentifier__";
     }else {
@@ -89,7 +90,7 @@
 
 + (CGFloat)cellHeightWithModel:(id<IMessageModel>)model
 {
-    RPRedpacketModel *messageModel = [RPRedpacketModel generateRedpacketWithChannelDict:model.message.ext];
+    RPRedpacketModel *messageModel = [RPRedpacketUnionHandle modelWithChannelRedpacketDic1:model.message.ext andSender:nil];
     if (messageModel.redpacketType == RPRedpacketTypeAmount) {
         return [RedPacketLuckView heightForRedpacketMessageCell] + 20;
     }else {
@@ -100,17 +101,17 @@
 - (void)setModel:(id<IMessageModel>)model
 {
     [super setModel:model];
-    RPRedpacketModel *messageModel = [RPRedpacketModel generateRedpacketWithChannelDict:model.message.ext];
+    RPRedpacketModel *messageModel = [RPRedpacketUnionHandle modelWithChannelRedpacketDic1:model.message.ext andSender:nil];
     if (messageModel.redpacketType == RPRedpacketTypeAmount) {
         [_redpacketView removeFromSuperview];
         _redpacketView = nil;
         [self.bubbleView.backgroundImageView addSubview:self.repacketLuckView];
-        [_repacketLuckView configWithRedpacketMessageModel: [RPRedpacketModel generateRedpacketWithChannelDict:model.message.ext]];
+        [_repacketLuckView configWithRedpacketMessageModel: [RPRedpacketUnionHandle modelWithChannelRedpacketDic1:model.message.ext andSender:nil]];
     }else {
         [_repacketLuckView removeFromSuperview];
         _repacketLuckView = nil;
         [self.bubbleView.backgroundImageView addSubview: self.redpacketView];
-                [_redpacketView configWithRedpacketMessageModel: [RPRedpacketModel generateRedpacketWithChannelDict:model.message.ext]
+                [_redpacketView configWithRedpacketMessageModel: [RPRedpacketUnionHandle modelWithChannelRedpacketDic1:model.message.ext andSender:nil]
                                         andRedpacketDic:model.message.ext];
     }
     /** 红包消息不显示已读 */
