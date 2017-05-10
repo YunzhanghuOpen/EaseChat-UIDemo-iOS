@@ -5,9 +5,9 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'ChatDemo-UI3.0' do
 
-	pod 'Hyphenate', :path => 'HyphenateFullSDK'
+    pod 'Hyphenate', :path => '../HyphenateFullSDK'
 
-	pod 'EaseUI', :path => 'EaseUI'
+    pod 'EaseUI', :path => '../EaseUI'
 
 end
 
