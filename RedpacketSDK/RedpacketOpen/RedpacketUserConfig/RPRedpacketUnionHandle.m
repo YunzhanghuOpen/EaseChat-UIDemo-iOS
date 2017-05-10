@@ -142,7 +142,15 @@
 
 + (BOOL)isRedpacketMessage:(NSDictionary *)dic
 {
-    BOOL isRedpacket = [dic[RedpacketKeyRedpacketSign] boolValue];
+    BOOL isRedpacket = [dic[RedpacketKeyRedpacketSign] boolValue] || [dic[RedpacketKeyRedpacketSign1] boolValue];
+    
+    return isRedpacket;
+}
+
++ (BOOL)isRedpacketTakenMessage:(NSDictionary *)dic
+{
+    BOOL isRedpacket = [dic[RedpacketKeyRedpacketTakenMessageSign] boolValue] || [dic[RedpacketKeyRedpacketTakenMessageSign1] boolValue];
+    
     return isRedpacket;
 }
 

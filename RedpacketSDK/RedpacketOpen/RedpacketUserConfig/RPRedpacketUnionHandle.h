@@ -26,4 +26,9 @@
                                          andSender:(RPUserInfo *)sender;
 
 
++ (BOOL)isRedpacketMessage:(NSDictionary *)dic;
+
++ (BOOL)isRedpacketTakenMessage:(NSDictionary *)dic;
+
+
 @end
