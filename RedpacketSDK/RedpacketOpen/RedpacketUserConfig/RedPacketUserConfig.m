@@ -9,7 +9,7 @@
 #import "RedPacketUserConfig.h"
 #import "UserProfileManager.h"
 #import "RPRedpacketBridge.h"
-#import "AnalysisRedpacketDict.h"
+#import "AnalysisRedpacketDictModel.h"
 #import "ChatDemoHelper.h"
 
 #import "RPRedpacketConstValues.h"
@@ -130,7 +130,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
             BOOL isSender = [senderID isEqualToString:currentUserID];
             NSString *text;
             /** 当前用户是红包发送者 */
-            if ([AnalysisRedpacketDict messageCellTypeWithDict:dict] == MessageCellTypeRedpaketTaken && isSender) {
+            if ([AnalysisRedpacketDictModel messageCellTypeWithDict:dict] == MessageCellTypeRedpaketTaken && isSender) {
                 NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
                 if (receiver.length == 0) {
                     receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];

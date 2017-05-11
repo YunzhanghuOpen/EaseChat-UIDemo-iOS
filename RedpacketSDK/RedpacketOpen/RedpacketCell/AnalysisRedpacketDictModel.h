@@ -1,5 +1,5 @@
 //
-//  AnalysisRedpacketDict.h
+//  AnalysisRedpacketDictModel.h
 //  ChatDemo-UI3.0
 //
 //  Created by Mr.Yan on 2017/5/11.
@@ -20,9 +20,9 @@ typedef NS_ENUM(NSInteger, MessageCellType) {
 };
 
 
-@interface AnalysisRedpacketDict : NSObject
+@interface AnalysisRedpacketDictModel : NSObject
 
-+ (AnalysisRedpacketDict *)AnalysisRedpacketWithModel:(id<IMessageModel>)mode;
++ (AnalysisRedpacketDictModel *)AnalysisRedpacketWithModel:(id<IMessageModel>)mode;
 
 /* 红包cell展示语句 */
 @property (nonatomic, readonly) NSString *greeting;

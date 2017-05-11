@@ -30,7 +30,7 @@ NSString *const RedpacketKeyRedpacketID1                = @"ID";
  *  红包的Type类型
  */
 NSString *const RedpacketKeyRedapcketType               = @"red_packet_type";
-NSString *const RedpacketKeyRedapcketType1               = @"red_packet_type";
+NSString *const RedpacketKeyRedapcketType1               = @"money_type_special";
 
 /**
  *  红包的发送方ID

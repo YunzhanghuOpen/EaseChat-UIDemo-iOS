@@ -16,7 +16,7 @@
 #import "UserProfileManager.h"
 //#import "UIImageView+WebCache.h"
 #import "RPRedpacketUnionHandle.h"
-#import "AnalysisRedpacketDict.h"
+#import "AnalysisRedpacketDictModel.h"
 /** 红包聊天窗口 */
 @interface RedPacketChatViewController () < EaseMessageCellDelegate,
                                             EaseMessageViewControllerDataSource
@@ -74,13 +74,13 @@
     if ([object conformsToProtocol:NSProtocolFromString(@"IMessageModel")]) {
         id <IMessageModel> messageModel = object;
         /** 如果是红包，则只显示删除按钮 */
-        if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket) {
+        if ([AnalysisRedpacketDictModel messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket) {
             EaseMessageCell *cell = (EaseMessageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             [cell becomeFirstResponder];
             self.menuIndexPath = indexPath;
             [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:EMMessageBodyTypeCmd];
             return NO;
-        }else if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
+        }else if ([AnalysisRedpacketDictModel messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
             return NO;
         }
     }
@@ -91,7 +91,7 @@
 - (UITableViewCell *)messageViewController:(UITableView *)tableView
                        cellForMessageModel:(id<IMessageModel>)messageModel
 {
-    if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket) {
+    if ([AnalysisRedpacketDictModel messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket) {
         /** 红包的卡片样式*/
         EaseRedBagCell *cell = [tableView dequeueReusableCellWithIdentifier:[EaseRedBagCell cellIdentifierWithModel:messageModel]];
         if (!cell) {
@@ -103,7 +103,7 @@
             cell.model = messageModel;
             return cell;
         }
-    if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
+    if ([AnalysisRedpacketDictModel messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
         /** XX人领取了你的红包的卡片样式*/
         RedpacketTakenMessageTipCell *cell =  [[RedpacketTakenMessageTipCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         [cell configWithText:messageModel.text];
@@ -117,9 +117,9 @@
            heightForMessageModel:(id<IMessageModel>)messageModel
                    withCellWidth:(CGFloat)cellWidth
 {
-    if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket)    {
+    if ([AnalysisRedpacketDictModel messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket)    {
         return [EaseRedBagCell cellHeightWithModel:messageModel];
-    }else if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
+    }else if ([AnalysisRedpacketDictModel messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
         return [RedpacketTakenMessageTipCell heightForRedpacketMessageTipCell];
     }
     return 0;
@@ -128,7 +128,7 @@
 /** 未读消息回执 */
 - (BOOL)messageViewController:(EaseMessageViewController *)viewController shouldSendHasReadAckForMessage:(EMMessage *)message read:(BOOL)read
 {
-    if ([AnalysisRedpacketDict messageCellTypeWithDict:message.ext] != MessageCellTypeNoRedpacket) {
+    if ([AnalysisRedpacketDictModel messageCellTypeWithDict:message.ext] != MessageCellTypeNoRedpacket) {
         return YES;
     }
     return [super shouldSendHasReadAckForMessage:message read:read];
@@ -237,7 +237,7 @@
 - (void)messageCellSelected:(id<IMessageModel>)model
 {
     __weak typeof(self) weakSelf = self;
-    if ([AnalysisRedpacketDict messageCellTypeWithDict:model.message.ext] == MessageCellTypeRedpaket) {
+    if ([AnalysisRedpacketDictModel messageCellTypeWithDict:model.message.ext] == MessageCellTypeRedpaket) {
         [self.view endEditing:YES];
         [RedpacketViewControl redpacketTouchedWithMessageModel:[RPRedpacketUnionHandle modelWithChannelRedpacketDic1:model.message.ext andSender:[self profileEntityWith:model.message.from]]
                                             fromViewController:self

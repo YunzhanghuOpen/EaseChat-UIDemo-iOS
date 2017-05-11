@@ -95,7 +95,7 @@
     [self.bubbleBackgroundView addSubview:self.typeLable];
 }
 
-- (void)configWithRedpacketMessageModel:(AnalysisRedpacketDict *)redpacketMessage
+- (void)configWithRedpacketMessageModel:(AnalysisRedpacketDictModel *)redpacketMessage
 {
     NSString *title;
     NSString *subTitle;
@@ -124,7 +124,7 @@
     [self layoutSubviewsWithModel:redpacketMessage];
 }
 
-- (void)layoutSubviewsWithModel:(AnalysisRedpacketDict *)model
+- (void)layoutSubviewsWithModel:(AnalysisRedpacketDictModel *)model
 {
     CGRect frame;
     CGSize iconSize;

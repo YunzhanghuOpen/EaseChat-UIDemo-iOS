@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AnalysisRedpacketDict.h"
+#import "AnalysisRedpacketDictModel.h"
 
 @interface RedPacketLuckView : UIView
 
@@ -16,6 +16,6 @@
 
 
 + (CGFloat)heightForRedpacketMessageCell;
-- (void)configWithRedpacketMessageModel:(AnalysisRedpacketDict *)model;
+- (void)configWithRedpacketMessageModel:(AnalysisRedpacketDictModel *)model;
 
 @end
