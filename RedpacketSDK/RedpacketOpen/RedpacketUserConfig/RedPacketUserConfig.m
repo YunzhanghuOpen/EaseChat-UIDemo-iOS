@@ -9,7 +9,7 @@
 #import "RedPacketUserConfig.h"
 #import "UserProfileManager.h"
 #import "RPRedpacketBridge.h"
-#import "RPRedpacketModel.h"
+#import "AnalysisRedpacketDict.h"
 #import "ChatDemoHelper.h"
 
 #import "RPRedpacketConstValues.h"
@@ -122,88 +122,79 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 /** 点对点红包，红包被抢的消息 */
 - (void)handleMessage:(NSArray <EMMessage *> *)aMessages
 {
-//    for (EMMessage *message in aMessages) {
-//        NSDictionary *dict = message.ext;
-//        if (dict) {
-//            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
-//            NSString *currentUserID = [EMClient sharedClient].currentUsername;
-//            BOOL isSender = [senderID isEqualToString:currentUserID];
-//            NSString *text;
-//            /** 当前用户是红包发送者 */
-//            if ([RPRedpacketModel isRedpacketTakenMessage:dict] && isSender) {
-//                NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
-//                if (receiver.length == 0) {
-//                    receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
-//                }
-//                text = [NSString stringWithFormat:@"%@领取了你的红包",receiver];
-//            }
-//            
-//            if (text && text.length > 0) {
-//                EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
-//                message.body = body;
-//                /** 把相应数据更新到数据库 */
-//                [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
-//            }
-//        }
-//    }
+    for (EMMessage *message in aMessages) {
+        NSDictionary *dict = message.ext;
+        if (dict) {
+            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+            NSString *currentUserID = [EMClient sharedClient].currentUsername;
+            BOOL isSender = [senderID isEqualToString:currentUserID];
+            NSString *text;
+            /** 当前用户是红包发送者 */
+            if ([AnalysisRedpacketDict messageCellTypeWithDict:dict] == MessageCellTypeRedpaketTaken && isSender) {
+                NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
+                if (receiver.length == 0) {
+                    receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+                }
+                text = [NSString stringWithFormat:@"%@领取了你的红包",receiver];
+            }
+            
+            if (text && text.length > 0) {
+                EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
+                message.body = body;
+                /** 把相应数据更新到数据库 */
+                [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
+            }
+        }
+    }
 }
 
 /** 群红包，红包被抢的消息 */
 - (void)handleCmdMessages:(NSArray <EMMessage *> *)aCmdMessages
 {
-//    for (EMMessage *message in aCmdMessages) {
-//        EMCmdMessageBody * body = (EMCmdMessageBody *)message.body;
-//        if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
-//            NSDictionary *dict = message.ext;
-//            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
-//            NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
-//            NSString *currentUserID = [EMClient sharedClient].currentUsername;
-//            NSString *conversationId = [message.ext valueForKey:RedpacketKeyRedpacketCmdToGroup];
-//            if ([senderID isEqualToString:currentUserID]){
-//                /** 当前用户是红包发送者 */
-//                NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
-//                EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithText:text];
-//                EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:conversationId from:message.from to:conversationId body:body1 ext:message.ext];
-//                textMessage.chatType = EMChatTypeGroupChat;
-//                textMessage.isRead = YES;
-//                /** 更新界面 */
-//                BOOL isCurrentConversation = [self.chatVC.conversation.conversationId isEqualToString:conversationId];
-//                if (self.chatVC && isCurrentConversation){
-//                    /** 刷新当前聊天界面 */
-//                    [self.chatVC addMessageToDataSource:textMessage progress:nil];
-//                    /** 存入当前会话并存入数据库 */
-//                    [self.chatVC.conversation insertMessage:textMessage error:nil];
-//                }else {
-//                    /** 插入数据库 */
-//                    ConversationListController *listVc = [ChatDemoHelper shareHelper].conversationListVC;
-//                    if (listVc) {
-//                        for (id <IConversationModel> model in [listVc.dataArray copy]) {
-//                            EMConversation *conversation = model.conversation;
-//                            if ([conversation.conversationId isEqualToString:textMessage.conversationId]) {
-//                                [conversation insertMessage:textMessage error:nil];
-//                            }
-//                        }
-//                        [listVc refresh];
-//                    }else {
-//                        [[EMClient sharedClient].chatManager importMessages:@[textMessage] completion:nil];
-//                    }
-//                }
-//            }
-//        }
-//    }
+    for (EMMessage *message in aCmdMessages) {
+        EMCmdMessageBody * body = (EMCmdMessageBody *)message.body;
+        if ([body.action isEqualToString:@"refresh_group_money_action"]) {
+            NSDictionary *dict = message.ext;
+            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+            NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+            NSString *currentUserID = [EMClient sharedClient].currentUsername;
+            NSString *conversationId = [message.ext valueForKey:RedpacketKeyRedpacketCmdToGroup];
+            if ([senderID isEqualToString:currentUserID]){
+                /** 当前用户是红包发送者 */
+                NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
+                EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithText:text];
+                EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:conversationId from:message.from to:conversationId body:body1 ext:message.ext];
+                textMessage.chatType = EMChatTypeGroupChat;
+                textMessage.isRead = YES;
+                /** 更新界面 */
+                BOOL isCurrentConversation = [self.chatVC.conversation.conversationId isEqualToString:conversationId];
+                if (self.chatVC && isCurrentConversation){
+                    /** 刷新当前聊天界面 */
+                    [self.chatVC addMessageToDataSource:textMessage progress:nil];
+                    /** 存入当前会话并存入数据库 */
+                    [self.chatVC.conversation insertMessage:textMessage error:nil];
+                }else {
+                    /** 插入数据库 */
+                    ConversationListController *listVc = [ChatDemoHelper shareHelper].conversationListVC;
+                    if (listVc) {
+                        for (id <IConversationModel> model in [listVc.dataArray copy]) {
+                            EMConversation *conversation = model.conversation;
+                            if ([conversation.conversationId isEqualToString:textMessage.conversationId]) {
+                                [conversation insertMessage:textMessage error:nil];
+                            }
+                        }
+                        [listVc refresh];
+                    }else {
+                        [[EMClient sharedClient].chatManager importMessages:@[textMessage] completion:nil];
+                    }
+                }
+            }
+        }
+    }
 }
 
 
-+ (MessageCellType)messageCellTypeWithDict:(NSDictionary *)dict
-{
-    if ([dict objectForKey:@"is_money_msg"]) {
-        return MessageCellTypeRedpaket;
-    }
-    if ([dict objectForKey:@"is_open_money_msg"]) {
-        return MessageCellTypeRedpaketTaken;
-    }
-    return MessageCellTypeNoRedpacket;
-}
+
 
 
 @end

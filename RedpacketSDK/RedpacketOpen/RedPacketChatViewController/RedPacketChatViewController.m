@@ -10,14 +10,13 @@
 #import "EaseRedBagCell.h"
 #import "RedpacketTakenMessageTipCell.h"
 #import "RedpacketViewControl.h"
-#import "RPRedpacketModel.h"
 #import "RedPacketUserConfig.h"
 #import "RPRedpacketBridge.h"
 #import "ChatDemoHelper.h"
 #import "UserProfileManager.h"
 //#import "UIImageView+WebCache.h"
 #import "RPRedpacketUnionHandle.h"
-
+#import "AnalysisRedpacketDict.h"
 /** 红包聊天窗口 */
 @interface RedPacketChatViewController () < EaseMessageCellDelegate,
                                             EaseMessageViewControllerDataSource
@@ -75,13 +74,13 @@
     if ([object conformsToProtocol:NSProtocolFromString(@"IMessageModel")]) {
         id <IMessageModel> messageModel = object;
         /** 如果是红包，则只显示删除按钮 */
-        if ([RedPacketUserConfig messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket) {
+        if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket) {
             EaseMessageCell *cell = (EaseMessageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             [cell becomeFirstResponder];
             self.menuIndexPath = indexPath;
             [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:EMMessageBodyTypeCmd];
             return NO;
-        }else if ([RedPacketUserConfig messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
+        }else if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
             return NO;
         }
     }
@@ -92,7 +91,7 @@
 - (UITableViewCell *)messageViewController:(UITableView *)tableView
                        cellForMessageModel:(id<IMessageModel>)messageModel
 {
-    if ([RedPacketUserConfig messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket) {
+    if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket) {
         /** 红包的卡片样式*/
         EaseRedBagCell *cell = [tableView dequeueReusableCellWithIdentifier:[EaseRedBagCell cellIdentifierWithModel:messageModel]];
         if (!cell) {
@@ -104,7 +103,7 @@
             cell.model = messageModel;
             return cell;
         }
-    if ([RedPacketUserConfig messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
+    if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
         /** XX人领取了你的红包的卡片样式*/
         RedpacketTakenMessageTipCell *cell =  [[RedpacketTakenMessageTipCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         [cell configWithText:messageModel.text];
@@ -118,9 +117,9 @@
            heightForMessageModel:(id<IMessageModel>)messageModel
                    withCellWidth:(CGFloat)cellWidth
 {
-    if ([RedPacketUserConfig messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket)    {
+    if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaket)    {
         return [EaseRedBagCell cellHeightWithModel:messageModel];
-    }else if ([RedPacketUserConfig messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
+    }else if ([AnalysisRedpacketDict messageCellTypeWithDict:messageModel.message.ext] == MessageCellTypeRedpaketTaken) {
         return [RedpacketTakenMessageTipCell heightForRedpacketMessageTipCell];
     }
     return 0;
@@ -129,7 +128,7 @@
 /** 未读消息回执 */
 - (BOOL)messageViewController:(EaseMessageViewController *)viewController shouldSendHasReadAckForMessage:(EMMessage *)message read:(BOOL)read
 {
-    if ([RedPacketUserConfig messageCellTypeWithDict:message.ext] != MessageCellTypeNoRedpacket) {
+    if ([AnalysisRedpacketDict messageCellTypeWithDict:message.ext] != MessageCellTypeNoRedpacket) {
         return YES;
     }
     return [super shouldSendHasReadAckForMessage:message read:read];
@@ -238,9 +237,9 @@
 - (void)messageCellSelected:(id<IMessageModel>)model
 {
     __weak typeof(self) weakSelf = self;
-    if ([RedPacketUserConfig messageCellTypeWithDict:model.message.ext] == MessageCellTypeRedpaket) {
+    if ([AnalysisRedpacketDict messageCellTypeWithDict:model.message.ext] == MessageCellTypeRedpaket) {
         [self.view endEditing:YES];
-        [RedpacketViewControl redpacketTouchedWithMessageModel:[self toRedpacketMessageModel:model]
+        [RedpacketViewControl redpacketTouchedWithMessageModel:[RPRedpacketUnionHandle modelWithChannelRedpacketDic1:model.message.ext andSender:[self profileEntityWith:model.message.from]]
                                             fromViewController:self
                                             redpacketGrabBlock:^(RPRedpacketModel *messageModel) {
                                                 /** 抢到红包后，发送红包被抢的消息*/
@@ -286,14 +285,6 @@
     } else {
         [super messageCellSelected:model];
     }
-
-}
-
-- (RPRedpacketModel *)toRedpacketMessageModel:(id <IMessageModel>)model
-{
-    NSDictionary *dict = model.message.ext;
-    RPRedpacketModel *messageModel = [RPRedpacketUnionHandle modelWithChannelRedpacketDic1:dict andSender:[self profileEntityWith:model.message.from]];
-    return messageModel;
 }
 
 @end

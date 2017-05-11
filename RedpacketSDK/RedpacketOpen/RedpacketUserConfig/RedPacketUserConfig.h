@@ -9,15 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "ChatViewController.h"
 
-//  红包状态
-typedef NS_ENUM(NSInteger, MessageCellType) {
-    
-    MessageCellTypeRedpaket         = 2009,        /***  红包消息*/
-    MessageCellTypeRedpaketTaken,                  /***  红包被抢消息*/
-    MessageCellTypeNoRedpacket                     /***  不是红包消息*/
-    
-};
-
 /**
  *  @description: 红包用户配置服务
  *  1.获取当前用户的信息
@@ -43,6 +34,5 @@ typedef NS_ENUM(NSInteger, MessageCellType) {
  */
 - (void)beginObserveMessage;
 
-+ (MessageCellType)messageCellTypeWithDict:(NSDictionary *)dict;
 
 @end
