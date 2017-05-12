@@ -24,7 +24,7 @@
 
 @end
 
-#define EaseMobAppKey @"easemob-demo#chatdemoui"
+#define EaseMobAppKey @"youliao#alipay"//@"easemob-demo#chatdemoui"
 
 
 @implementation AppDelegate

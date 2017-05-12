@@ -17,6 +17,7 @@
 //#import "UIImageView+WebCache.h"
 #import "RPRedpacketUnionHandle.h"
 #import "AnalysisRedpacketDictModel.h"
+#import "RPRedpacketConstValues.h"
 /** 红包聊天窗口 */
 @interface RedPacketChatViewController () < EaseMessageCellDelegate,
                                             EaseMessageViewControllerDataSource
@@ -159,17 +160,23 @@
         [weakSelf sendRedPacketMessage:model];
         
     } withFetchGroupMemberListBlock:^(RedpacketMemberListFetchBlock completionHandle) {
-        /** 定向红包群成员列表页面，获取群成员列表 */
-        EMGroup *group = [[[EMClient sharedClient] groupManager] getGroupSpecificationFromServerWithId:self.conversation.conversationId
-                                                                                                 error:nil];
-        NSMutableArray *mArray = [[NSMutableArray alloc] init];
-        for (NSString *username in group.occupants) {
-            /** 创建群成员用户 */
-            RPUserInfo *userInfo = [self profileEntityWith:username];
-            [mArray addObject:userInfo];
-        }
         
-        completionHandle(mArray);
+        /** 定向红包群成员列表页面，获取群成员列表 */
+        EMError *error = nil;
+        EMGroup *group = [[[EMClient sharedClient] groupManager] getGroupSpecificationFromServerWithId:self.conversation.conversationId error:&error];
+        if (error) {
+            completionHandle(nil);
+        } else {
+            EMCursorResult *result = [[EMClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.conversation.conversationId cursor:nil pageSize:group.occupantsCount error:&error];
+            NSMutableArray *mArray = [[NSMutableArray alloc] init];
+            for (NSString *username in result.list) {
+                /** 创建群成员用户 */
+                RPUserInfo *userInfo = [self profileEntityWith:username];
+                [mArray addObject:userInfo];
+            }
+            [mArray addObject:[self profileEntityWith:group.owner]];
+            completionHandle(mArray);
+        }
         
     } andGenerateRedpacketIDBlock:nil];
 
@@ -180,7 +187,7 @@
 {
     NSMutableDictionary *mDic = [NSMutableDictionary new];
     [mDic setDictionary:[RPRedpacketUnionHandle dictWithRedpacketModel:model isACKMessage:NO]];
-    [mDic setObject:@(YES) forKey:@"is_money_msg"];//红包消息标识
+    [mDic setObject:@(YES) forKey:RedpacketKeyRedpacketSign];//红包消息标识
     NSString *messageText = [NSString stringWithFormat:@"[%@]%@", @"红包", model.greeting];
     [self sendTextMessage:messageText withExt:mDic];
 }
@@ -193,9 +200,9 @@
     NSString *conversationId = self.conversation.conversationId;
     NSMutableDictionary *dic = [NSMutableDictionary new];
     [dic setDictionary:[RPRedpacketUnionHandle dictWithRedpacketModel:messageModel isACKMessage:YES]];
-    [dic setValue:@(YES) forKey:@"is_open_money_msg"];//红包被抢标识
+    [dic setValue:@(YES) forKey:RedpacketKeyRedpacketTakenMessageSign];//红包被抢标识
     /** 忽略推送 */
-    [dic setValue:@(YES) forKey:@"em_ignore_notification"];
+    [dic setValue:@(YES) forKey:RedpacketCMDMessageAction];
     NSString *text = [NSString stringWithFormat:@"你领取了%@发的红包", messageModel.sender.userName];
     if (self.conversation.type == EMConversationTypeChat) {
         
@@ -222,11 +229,11 @@
 
 - (EMMessage *)createCmdMessageWithModel:(RPRedpacketModel *)model
 {
-    NSMutableDictionary *dict ;//= [model.redpacketMessageModelToDic mutableCopy];
+    NSDictionary *dict = [RPRedpacketUnionHandle dictWithRedpacketModel:model isACKMessage:YES];
     
     NSString *currentUser = [EMClient sharedClient].currentUsername;
     NSString *toUser = model.sender.userID;
-    EMCmdMessageBody *cmdChat = [[EMCmdMessageBody alloc] initWithAction:@"RedpacketKeyRedapcketCmd"];
+    EMCmdMessageBody *cmdChat = [[EMCmdMessageBody alloc] initWithAction:RedpacketCMDMessageAction];
     EMMessage *message = [[EMMessage alloc] initWithConversationID:self.conversation.conversationId from:currentUser to:toUser body:cmdChat ext:dict];
     message.chatType = EMChatTypeChat;
     

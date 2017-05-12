@@ -79,9 +79,9 @@
         //  发送者昵称
         [dic setValue:model.sender.userName forKey:RedpacketKeyRedpacketSenderNickname];
         //  接收者ID
-        [dic setValue:model.sender.userID forKey:RedpacketKeyRedpacketReceiverId];
+        [dic setValue:model.receiver.userID forKey:RedpacketKeyRedpacketReceiverId];
         //  接收者昵称
-        [dic setValue:model.sender.userName forKey:RedpacketKeyRedpacketReceiverNickname];
+        [dic setValue:model.receiver.userName forKey:RedpacketKeyRedpacketReceiverNickname];
         
     }else {
         

@@ -153,7 +153,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 {
     for (EMMessage *message in aCmdMessages) {
         EMCmdMessageBody * body = (EMCmdMessageBody *)message.body;
-        if ([body.action isEqualToString:@"refresh_group_money_action"]) {
+        if ([body.action isEqualToString:RedpacketCMDMessageAction]) {
             NSDictionary *dict = message.ext;
             NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
             NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
