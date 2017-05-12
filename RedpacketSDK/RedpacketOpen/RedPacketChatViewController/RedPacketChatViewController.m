@@ -140,14 +140,15 @@
     __weak typeof(self) weakSelf = self;
     RPRedpacketControllerType  redpacketVCType;
     RPUserInfo *userInfo = [RPUserInfo new];
-    userInfo = [self profileEntityWith:self.conversation.conversationId];
     NSArray *groupArray = [EMGroup groupWithId:self.conversation.conversationId].occupants;
     if (self.conversation.type == EMConversationTypeChat) {
             /** 小额随机红包*/
         redpacketVCType = RPRedpacketControllerTypeRand;
+        userInfo = [self profileEntityWith:self.conversation.conversationId];
     }else {
             /** 群红包*/
         redpacketVCType = RPRedpacketControllerTypeGroup;
+        userInfo.userID = self.conversation.conversationId;//如果是群红包，只要当前群ID即可
     }
     
     /** 发红包方法*/
