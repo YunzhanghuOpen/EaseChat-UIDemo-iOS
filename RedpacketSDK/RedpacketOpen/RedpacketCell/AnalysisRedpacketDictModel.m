@@ -34,7 +34,7 @@
 
 + (MessageCellType)messageCellTypeWithDict:(NSDictionary *)dict
 {
-    if ([dict objectForKey:RedpacketKeyRedpacketSign]) {
+    if ([dict objectForKey:RedpacketKeyRedpacketSign]||[dict objectForKey:RedpacketKeyRedpacketSign1]) {
         return MessageCellTypeRedpaket;
     }
     if ([dict objectForKey:RedpacketKeyRedpacketTakenMessageSign]) {
