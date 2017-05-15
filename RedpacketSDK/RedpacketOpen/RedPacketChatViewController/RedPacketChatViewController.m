@@ -257,37 +257,36 @@
                                                 
                                             } advertisementAction:^(RPAdvertInfo *addvertInfo) {
                                                 /** 营销红包事件处理*/
-//                                                NSInteger actionType = [args[@"actionType"] integerValue];
-//                                                switch (actionType) {
-//                                                    case 0:
-//                                                        /** 用户点击了领取红包按钮*/
-//                                                        break;
-//                                                        
-//                                                    case 1: {
-//                                                        /** 用户点击了去看看按钮，进入到商户定义的网页 */
-//                                                        UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-//                                                        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:args[@"LandingPage"]]];
-//                                                        [webView loadRequest:request];
-//                                                        
-//                                                        UIViewController *webVc = [[UIViewController alloc] init];
-//                                                        [webVc.view addSubview:webView];
-//                                                        [(UINavigationController *)self.presentedViewController pushViewController:webVc animated:YES];
-//                                                        
-//                                                    }
-//                                                        break;
-//                                                        
-//                                                    case 2: {
-//                                                        /** 点击了分享按钮，开发者可以根据需求自定义，动作。*/
-//                                                        [[[UIAlertView alloc]initWithTitle:nil
-//                                                                                  message:@"点击「分享」按钮，红包SDK将该红包素材内配置的分享链接传递给商户APP，由商户APP自行定义分享渠道完成分享动作。"
-//                                                                                 delegate:nil
-//                                                                        cancelButtonTitle:@"我知道了"
-//                                                                        otherButtonTitles:nil] show];
-//                                                    }
-//                                                        break;
-//                                                    default:
-//                                                        break;
-//                                                }
+                                                switch (addvertInfo.AdvertisementActionType) {
+                                                    case RedpacketAdvertisementReceive:
+                                                        /** 用户点击了领取红包按钮*/
+                                                        break;
+                                                        
+                                                    case RedpacketAdvertisementAction: {
+                                                        /** 用户点击了去看看按钮，进入到商户定义的网页 */
+                                                        UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+                                                        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:addvertInfo.shareURLString]];
+                                                        [webView loadRequest:request];
+                                                        
+                                                        UIViewController *webVc = [[UIViewController alloc] init];
+                                                        [webVc.view addSubview:webView];
+                                                        [(UINavigationController *)self.presentedViewController pushViewController:webVc animated:YES];
+                                                        
+                                                    }
+                                                        break;
+                                                        
+                                                    case RedpacketAdvertisementShare: {
+                                                        /** 点击了分享按钮，开发者可以根据需求自定义，动作。*/
+                                                        [[[UIAlertView alloc]initWithTitle:nil
+                                                                                  message:@"点击「分享」按钮，红包SDK将该红包素材内配置的分享链接传递给商户APP，由商户APP自行定义分享渠道完成分享动作。"
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle:@"我知道了"
+                                                                        otherButtonTitles:nil] show];
+                                                    }
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
                                                 
         }];
     } else {
