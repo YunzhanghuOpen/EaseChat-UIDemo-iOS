@@ -206,9 +206,7 @@
     [dic setValue:@(YES) forKey:RedpacketCMDMessageAction];
     NSString *text = [NSString stringWithFormat:@"你领取了%@发的红包", messageModel.sender.userName];
     if (self.conversation.type == EMConversationTypeChat) {
-        
         [self sendTextMessage:text withExt:dic];
-        
     }else{
         
         if ([senderId isEqualToString:currentUser]) {
