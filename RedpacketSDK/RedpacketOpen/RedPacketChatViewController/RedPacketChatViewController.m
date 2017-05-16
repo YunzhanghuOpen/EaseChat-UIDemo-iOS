@@ -212,7 +212,6 @@
                                         groupMemberCount:groupArray.count
                                    withRedpacketReceiver:userInfo
                                          andSuccessBlock:^(RPRedpacketModel *model) {
-<<<<<<< HEAD
         
         [weakSelf sendRedPacketMessage:model];
         
@@ -243,27 +242,6 @@
         }
         
     }];
-=======
-                                             [weakSelf sendRedPacketMessage:model];
-                                         } withFetchGroupMemberListBlock:^(RedpacketMemberListFetchBlock fetchFinishBlock) {
-                                             /** 定向红包群成员列表页面，获取群成员列表 */
-                                             EMError *error = nil;
-                                             EMGroup *group = [[[EMClient sharedClient] groupManager] getGroupSpecificationFromServerWithId:self.conversation.conversationId error:&error];
-                                             if (error) {
-                                                 fetchFinishBlock(nil);
-                                             } else {
-                                                 EMCursorResult *result = [[EMClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.conversation.conversationId cursor:nil pageSize:group.occupantsCount error:&error];
-                                                 NSMutableArray *mArray = [[NSMutableArray alloc] init];
-                                                 for (NSString *username in result.list) {
-                                                     /** 创建群成员用户 */
-                                                     RPUserInfo *userInfo = [self profileEntityWith:username];
-                                                     [mArray addObject:userInfo];
-                                                 }
-                                                 [mArray addObject:[self profileEntityWith:group.owner]];
-                                                 fetchFinishBlock(mArray);
-                                             }
-                                         }];
->>>>>>> 08f85209a7c846413f000984160777b6c2c33cb5
 
 }
 
