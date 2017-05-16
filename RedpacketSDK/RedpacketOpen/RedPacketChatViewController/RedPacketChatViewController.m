@@ -157,29 +157,25 @@
                                         groupMemberCount:groupArray.count
                                    withRedpacketReceiver:userInfo
                                          andSuccessBlock:^(RPRedpacketModel *model) {
-        
-        [weakSelf sendRedPacketMessage:model];
-        
-    } withFetchGroupMemberListBlock:^(RedpacketMemberListFetchBlock completionHandle) {
-        
-        /** 定向红包群成员列表页面，获取群成员列表 */
-        EMError *error = nil;
-        EMGroup *group = [[[EMClient sharedClient] groupManager] getGroupSpecificationFromServerWithId:self.conversation.conversationId error:&error];
-        if (error) {
-            completionHandle(nil);
-        } else {
-            EMCursorResult *result = [[EMClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.conversation.conversationId cursor:nil pageSize:group.occupantsCount error:&error];
-            NSMutableArray *mArray = [[NSMutableArray alloc] init];
-            for (NSString *username in result.list) {
-                /** 创建群成员用户 */
-                RPUserInfo *userInfo = [self profileEntityWith:username];
-                [mArray addObject:userInfo];
-            }
-            [mArray addObject:[self profileEntityWith:group.owner]];
-            completionHandle(mArray);
-        }
-        
-    } andGenerateRedpacketIDBlock:nil];
+                                             [weakSelf sendRedPacketMessage:model];
+                                         } withFetchGroupMemberListBlock:^(RedpacketMemberListFetchBlock fetchFinishBlock) {
+                                             /** 定向红包群成员列表页面，获取群成员列表 */
+                                             EMError *error = nil;
+                                             EMGroup *group = [[[EMClient sharedClient] groupManager] getGroupSpecificationFromServerWithId:self.conversation.conversationId error:&error];
+                                             if (error) {
+                                                 fetchFinishBlock(nil);
+                                             } else {
+                                                 EMCursorResult *result = [[EMClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.conversation.conversationId cursor:nil pageSize:group.occupantsCount error:&error];
+                                                 NSMutableArray *mArray = [[NSMutableArray alloc] init];
+                                                 for (NSString *username in result.list) {
+                                                     /** 创建群成员用户 */
+                                                     RPUserInfo *userInfo = [self profileEntityWith:username];
+                                                     [mArray addObject:userInfo];
+                                                 }
+                                                 [mArray addObject:[self profileEntityWith:group.owner]];
+                                                 fetchFinishBlock(mArray);
+                                             }
+                                         }];
 
 }
 
