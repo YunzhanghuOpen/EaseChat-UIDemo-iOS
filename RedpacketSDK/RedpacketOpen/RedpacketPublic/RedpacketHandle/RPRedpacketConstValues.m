@@ -85,5 +85,3 @@ NSString *const RedpacketKeyRedpacketAdvertisement      = @"advertisement";
 //  系统红包
 NSString *const RedpacketKeyRedpacketSystem             = @"randpri";
 
-
-NSString *const RedpacketCMDMessageAction               = @"refresh_red_packet_ack_action";

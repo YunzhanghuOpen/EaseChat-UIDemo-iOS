@@ -10,6 +10,7 @@
 #import "RPRedpacketConstValues.h"
 #import "RPRedpacketConstValues_v1.h"
 
+#define IGNORE_PUSH_MESSAGE  @"em_ignore_notification"
 
 @implementation RPRedpacketUnionHandle
 
@@ -84,7 +85,7 @@
         //  接收者昵称
         [dic setValue:model.receiver.userName forKey:RedpacketKeyRedpacketReceiverNickname];
         // 忽略推送
-        [dic setValue:@(YES) forKey:RedpacketCMDMessageAction];
+        [dic setValue:@(YES) forKey:IGNORE_PUSH_MESSAGE];
         
     }else {
         
@@ -96,8 +97,6 @@
         [dic setValue:model.redpacketTypeStr forKey:RedpacketKeyRedapcketType];
         //  祝福语
         [dic setValue:model.greeting forKey:RedpacketKeyRedpacketGreeting];
-        //  APP组织名称
-        [dic setValue:@"云账户" forKey:RedpacketKeyRedpacketOrgName];
         
     }
     
@@ -135,6 +134,11 @@
 {
     NSString *redpacketID = [redpacketDic objectForKey:RedpacketKeyRedpacketID];
     NSAssert(redpacketID.length, @"红包ID为空，经检查字典中是否存在红包ID");
+    
+    if (redpacketID.length) {
+        return nil;
+    }
+    
     NSString *redpacketType = [redpacketDic objectForKey:RedpacketKeyRedapcketType];
 
     RPRedpacketModel *model = [RPRedpacketModel modelWithRedpacketID:redpacketID

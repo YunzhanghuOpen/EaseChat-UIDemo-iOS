@@ -13,6 +13,7 @@
 #import "ChatDemoHelper.h"
 #import "RPRedpacketConstValues.h"
 
+#define REDPACKET_CMD_MESSAGE   @"refresh_red_packet_ack_action"
 
 /** 环信IMToken过期 */
 NSInteger const RedpacketEaseMobTokenOutDate = 20304;
@@ -187,7 +188,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     for (EMMessage *message in aCmdMessages) {
         EMCmdMessageBody * body = (EMCmdMessageBody *)message.body;
         
-        if ([body.action isEqualToString:RedpacketCMDMessageAction]) {
+        if ([body.action isEqualToString:REDPACKET_CMD_MESSAGE]) {
             
             NSDictionary *dict = message.ext;
             NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];

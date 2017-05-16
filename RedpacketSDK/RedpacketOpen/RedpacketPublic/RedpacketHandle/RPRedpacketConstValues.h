@@ -17,7 +17,7 @@ UIKIT_EXTERN NSString *const RedpacketKeyRedpacketSign;
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketTakenMessageSign;
 // 红包ID
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketID;
-// 红包类型 (
+// 红包类型
 UIKIT_EXTERN NSString *const RedpacketKeyRedapcketType;
 // 红包的发送方ID
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketSenderId;
@@ -29,8 +29,6 @@ UIKIT_EXTERN NSString *const RedpacketKeyRedpacketReceiverId;
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketReceiverNickname;
 // 定向红包的接收者id
 UIKIT_EXTERN NSString *const RedpacketKeyRedapcketToReceiver;
-// 红包的名字（例如：云红包）
-UIKIT_EXTERN NSString *const RedpacketKeyRedpacketOrgName;
 // 红包的祝福语
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketGreeting;
 // 红包回执消息需要带上红包所在的群组ID
@@ -39,20 +37,18 @@ UIKIT_EXTERN NSString *const RedpacketKeyRedpacketCmdToGroup;
 //------------------------------
 // 红包类型
 //------------------------------
-//  定向红包
+// 定向红包
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketMember;
-//  小额随机红包
+// 小额随机红包
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketConst;
-//  群平均红包
+// 群平均红包
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketGroupAvg;
-//  群随机红包
+// 群随机红包
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketGroupRand;
-//  广告红包
+// 广告红包
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketAdvertisement;
-//  系统红包
+// 系统红包
 UIKIT_EXTERN NSString *const RedpacketKeyRedpacketSystem;
 
-//  环信红包消息体字段
-UIKIT_EXTERN NSString *const RedpacketCMDMessageAction;
 
 
