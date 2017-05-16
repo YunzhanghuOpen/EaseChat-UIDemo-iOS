@@ -8,6 +8,7 @@
 
 #import "RPRedpacketUnionHandle.h"
 #import "RPRedpacketConstValues.h"
+#import "RPRedpacketConstValues_v1.h"
 
 
 @implementation RPRedpacketUnionHandle
@@ -82,6 +83,8 @@
         [dic setValue:model.receiver.userID forKey:RedpacketKeyRedpacketReceiverId];
         //  接收者昵称
         [dic setValue:model.receiver.userName forKey:RedpacketKeyRedpacketReceiverNickname];
+        // 忽略推送
+        [dic setValue:@(YES) forKey:RedpacketCMDMessageAction];
         
     }else {
         
@@ -103,7 +106,7 @@
 }
 
 
-//  IM通道中传入的Dict
+//  IM通道中传入的Dict （旧版新版都支持）
 + (RPRedpacketModel *)modelWithChannelRedpacketDic1:(NSDictionary *)redpacketDic
                                           andSender:(RPUserInfo *)sender
 {
@@ -113,6 +116,7 @@
     //  如果旧版本的Key值不存在，则用新版本
     if (redpacketID.length == 0) {
         
+        //  使用新版本
         return [self modelWithChannelRedpacketDic:redpacketDic
                                         andSender:sender];
         
@@ -125,7 +129,7 @@
     return model;
 }
 
-//  IM通道中传入的Dict
+//  IM通道中传入的Dict (新版)
 + (RPRedpacketModel *)modelWithChannelRedpacketDic:(NSDictionary *)redpacketDic
                                          andSender:(RPUserInfo *)sender
 {
@@ -138,20 +142,6 @@
                                                   andRedpacketSender:sender];
     
     return model;
-}
-
-+ (BOOL)isRedpacketMessage:(NSDictionary *)dic
-{
-    BOOL isRedpacket = [dic[RedpacketKeyRedpacketSign] boolValue] || [dic[RedpacketKeyRedpacketSign1] boolValue];
-    
-    return isRedpacket;
-}
-
-+ (BOOL)isRedpacketTakenMessage:(NSDictionary *)dic
-{
-    BOOL isRedpacket = [dic[RedpacketKeyRedpacketTakenMessageSign] boolValue] || [dic[RedpacketKeyRedpacketTakenMessageSign1] boolValue];
-    
-    return isRedpacket;
 }
 
 @end

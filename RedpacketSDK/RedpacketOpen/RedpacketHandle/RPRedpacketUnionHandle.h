@@ -20,15 +20,9 @@
 + (NSDictionary *)dictWithRedpacketModel:(RPRedpacketModel *)model
                             isACKMessage:(BOOL)isAckMessage;
 
-
 //  IM通道中传入的Dict (兼容旧版本)
 + (RPRedpacketModel *)modelWithChannelRedpacketDic1:(NSDictionary *)redpacketDic
-                                         andSender:(RPUserInfo *)sender;
-
-
-+ (BOOL)isRedpacketMessage:(NSDictionary *)dic;
-
-+ (BOOL)isRedpacketTakenMessage:(NSDictionary *)dic;
+                                          andSender:(RPUserInfo *)sender;
 
 
 @end
