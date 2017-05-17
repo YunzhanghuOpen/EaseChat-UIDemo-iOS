@@ -26,9 +26,9 @@
     [dic setValue:model.sender.userName forKey:RedpacketKeyRedpacketSenderNickname];
     
     //  接收者ID
-    [dic setValue:model.sender.userID forKey:RedpacketKeyRedpacketReceiverId];
+    [dic setValue:model.receiver.userID forKey:RedpacketKeyRedpacketReceiverId];
     //  接收者昵称
-    [dic setValue:model.sender.userName forKey:RedpacketKeyRedpacketReceiverNickname];
+    [dic setValue:model.receiver.userName forKey:RedpacketKeyRedpacketReceiverNickname];
     
     //  除了单聊红包其它红包都是有值的
     [dic setValue:model.redpacketTypeStr forKey:RedpacketKeyRedapcketType];
