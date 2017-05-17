@@ -106,7 +106,7 @@
     icon = [UIImage imageNamed:REDPACKETBUNDLE(@"redPacket_redPacktIcon")];
     title = redpacketMessage.greeting;
     subTitle = RedpacketSubMessageText;
-   // orgTitle = redpacketMessage.redpacket.redpacketOrgName;
+    orgTitle = redpacketMessage.redpacketOrgName;
     if (redpacketMessage.redpacketType == RPRedpacketTypeGoupMember) {
         self.typeLable.hidden = NO;
         self.typeLable.text = RedpacketDirectText;
