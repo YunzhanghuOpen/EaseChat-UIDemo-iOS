@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger, MessageCellType) {
 /* 红包cell展示语句 */
 @property (nonatomic,   copy, readonly) NSString *greeting;
 
+@property (nonatomic,   copy, readonly) NSString *redpacketOrgName;
+
 @property (nonatomic, strong)   RPUser *sender;
 @property (nonatomic, strong)   RPUser *receiver;
 
