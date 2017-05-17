@@ -61,7 +61,7 @@
 {
     _type = messageType;
     _greeting  = dict[RedpacketKeyRedpacketGreeting];
-    
+    _isSender = isSender;
     
     
     if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketMember]) {

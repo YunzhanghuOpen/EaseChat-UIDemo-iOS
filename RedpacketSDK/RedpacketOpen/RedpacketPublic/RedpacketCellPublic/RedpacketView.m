@@ -102,8 +102,7 @@
     NSString *orgTitle;
     UIImage  *icon;
     NSString *imageName;
-    BOOL isSender = redpacketMessage.isSender;
-    imageName = isSender ? @"redpacket_sender_bg" : @"redpacket_receiver_bg";
+    imageName = redpacketMessage.isSender ? @"redpacket_sender_bg" : @"redpacket_receiver_bg";
     icon = [UIImage imageNamed:REDPACKETBUNDLE(@"redPacket_redPacktIcon")];
     title = redpacketMessage.greeting;
     subTitle = RedpacketSubMessageText;
