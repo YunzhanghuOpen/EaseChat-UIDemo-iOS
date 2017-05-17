@@ -250,9 +250,7 @@
 /** 发送红包消息*/
 - (void)sendRedPacketMessage:(RPRedpacketModel *)model
 {
-    NSMutableDictionary *mDic = [NSMutableDictionary new];
-    [mDic setDictionary:[RPRedpacketUnionHandle dictWithRedpacketModel:model isACKMessage:NO]];
-    [mDic setObject:@(YES) forKey:RedpacketKeyRedpacketSign];//红包消息标识
+    NSDictionary *mDic = [RPRedpacketUnionHandle dictWithRedpacketModel:model isACKMessage:NO];
     NSString *messageText = [NSString stringWithFormat:@"[%@]%@", @"红包", model.greeting];
     [self sendTextMessage:messageText withExt:mDic];
 }
@@ -334,8 +332,8 @@
     if ([AnalysisRedpacketModel messageCellTypeWithDict:model.message.ext] == MessageCellTypeRedpaket) {
         [self.view endEditing:YES];
         
-        RPRedpacketModel *messageModel = [RPRedpacketUnionHandle modelWithChannelRedpacketDic1:model.message.ext
-                                                                                     andSender:[self profileEntityWith:model.message.from]];
+        RPRedpacketModel *messageModel = [RPRedpacketUnionHandle modelWithChannelRedpacketDic:model.message.ext
+                                                                                    andSender:[self profileEntityWith:model.message.from]];
         
         [RedpacketViewControl redpacketTouchedWithMessageModel:messageModel
                                             fromViewController:self
@@ -352,7 +350,7 @@
                                                 
                                                 [weakSelf advertisementAction:adInfo];
                                                 
-        }];
+                                            }];
         
     } else {
         

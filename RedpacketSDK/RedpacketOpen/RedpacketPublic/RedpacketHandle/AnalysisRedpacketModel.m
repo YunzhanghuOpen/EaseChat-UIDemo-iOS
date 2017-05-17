@@ -2,13 +2,12 @@
 //  AnalysisRedpacketModel.m
 //  ChatDemo-UI3.0
 //
-//  Created by Mr.Yan on 2017/5/11.
-//  Copyright © 2017年 Mr.Yan. All rights reserved.
+//  Created by Mr.Yan on 207/5/.
+//  Copyright © 207年 Mr.Yan. All rights reserved.
 //
 
 #import "AnalysisRedpacketModel.h"
 #import "RPRedpacketConstValues.h"
-#import "RPRedpacketConstValues_v1.h"
 
 
 @implementation RPUser
@@ -22,12 +21,12 @@
 + (MessageCellType)messageCellTypeWithDict:(NSDictionary *)dict
 {
     if ([dict objectForKey:RedpacketKeyRedpacketSign] ||
-        [dict objectForKey:RedpacketKeyRedpacketSign1]) {
+        [dict objectForKey:RedpacketKeyRedpacketSign]) {
         
         return MessageCellTypeRedpaket;
         
     } else if ([dict objectForKey:RedpacketKeyRedpacketTakenMessageSign] ||
-               [dict objectForKey:RedpacketKeyRedpacketTakenMessageSign1]) {
+               [dict objectForKey:RedpacketKeyRedpacketTakenMessageSign]) {
         
         return MessageCellTypeRedpaketTaken;
         
@@ -63,16 +62,16 @@
     if (dict[RedpacketKeyRedpacketGreeting]) {
         _greeting  = dict[RedpacketKeyRedpacketGreeting];
     } else {//  兼容旧版本
-        _greeting  = dict[RedpacketKeyRedpacketGreeting1];
+        _greeting  = dict[RedpacketKeyRedpacketGreeting];
     }    _isSender = isSender;
     _redpacketOrgName = @"云账户";
     
     //   || 运算符后为兼容旧版本
-    if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketMember] || [dict[RedpacketKeyRedapcketType1] isEqualToString:RedpacketKeyRedpacketMember]) {
+    if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketMember]) {
         
         _redpacketType = RPRedpacketTypeGoupMember;
         
-    }else if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketConst] || [dict[RedpacketKeyRedapcketType1] isEqualToString:RedpacketKeyRedpacketConst]) {
+    }else if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketConst] || [dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketConst]) {
         
         _redpacketType = RPRedpacketTypeAmount;
         
@@ -83,12 +82,12 @@
     sender.userID = dict[RedpacketKeyRedpacketSenderId];
     
     if (sender.userID.length == 0) {
-        sender.userID = dict[RedpacketKeyRedpacketSenderId1];
+        sender.userID = dict[RedpacketKeyRedpacketSenderId];
     }
     
     sender.userName = dict[RedpacketKeyRedpacketSenderNickname];
     if (sender.userName.length == 0) {
-        sender.userName = dict[RedpacketKeyRedpacketSenderNickname1];
+        sender.userName = dict[RedpacketKeyRedpacketSenderNickname];
     }
     
     self.sender = sender;
@@ -98,12 +97,12 @@
     
     receiver.userID = dict[RedpacketKeyRedpacketReceiverId];
     if (receiver.userID.length == 0) {
-        receiver.userID = dict[RedpacketKeyRedpacketReceiverId1];
+        receiver.userID = dict[RedpacketKeyRedpacketReceiverId];
     }
     
     receiver.userName = dict[RedpacketKeyRedpacketReceiverNickname];
     if (receiver.userName.length == 0) {
-        receiver.userName = dict[RedpacketKeyRedpacketReceiverNickname1];
+        receiver.userName = dict[RedpacketKeyRedpacketReceiverNickname];
     }
     
     self.receiver = receiver;

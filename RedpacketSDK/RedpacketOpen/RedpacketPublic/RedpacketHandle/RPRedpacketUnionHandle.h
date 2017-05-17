@@ -12,23 +12,11 @@
 
 @interface RPRedpacketUnionHandle : NSObject
 
-//  生成通道中传输的Dict (兼容旧版本)
-+ (NSDictionary *)dictWithRedpacketModel1:(RPRedpacketModel *)model
-                             isACKMessage:(BOOL)isAckMessage;
-
-//  IM通道中传入的Dict (兼容旧版本)
-+ (RPRedpacketModel *)modelWithChannelRedpacketDic1:(NSDictionary *)redpacketDic
-                                          andSender:(RPUserInfo *)sender;
-
-//  ------------------------
-//  新版 （第一次接入无需兼容旧版）
-//  ------------------------
-
-//  生成通道中传输的Dict （新版本）
+//  生成通道中传输的Dict
 + (NSDictionary *)dictWithRedpacketModel:(RPRedpacketModel *)model
                             isACKMessage:(BOOL)isAckMessage;
 
-//  IM通道中传入的Dict (新版)
+//  IM通道中传入的Dict
 + (RPRedpacketModel *)modelWithChannelRedpacketDic:(NSDictionary *)redpacketDic
                                          andSender:(RPUserInfo *)sender;
 

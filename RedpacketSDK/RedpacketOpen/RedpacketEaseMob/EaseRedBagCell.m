@@ -77,7 +77,7 @@
 {
     _bubbleView.translatesAutoresizingMaskIntoConstraints = YES;
     
-    AnalysisRedpacketModel *messageModel = [AnalysisRedpacketModel AnalysisRedpacketWithDict:model.message.ext
+    AnalysisRedpacketModel *messageModel = [AnalysisRedpacketModel analysisRedpacketWithDict:model.message.ext
                                                                                  andIsSender:model.isSender];
     
     if (model.isSender) {
@@ -108,7 +108,7 @@
 
 + (NSString *)cellIdentifierWithModel:(id<IMessageModel>)model
 {
-    AnalysisRedpacketModel *messageModel = [AnalysisRedpacketModel AnalysisRedpacketWithDict:model.message.ext
+    AnalysisRedpacketModel *messageModel = [AnalysisRedpacketModel analysisRedpacketWithDict:model.message.ext
                                                                                  andIsSender:model.isSender];
     
     if (messageModel.redpacketType == RPRedpacketTypeAmount) {
@@ -124,7 +124,7 @@
 
 + (CGFloat)cellHeightWithModel:(id<IMessageModel>)model
 {
-    AnalysisRedpacketModel *messageModel = [AnalysisRedpacketModel AnalysisRedpacketWithDict:model.message.ext
+    AnalysisRedpacketModel *messageModel = [AnalysisRedpacketModel analysisRedpacketWithDict:model.message.ext
                                                                                  andIsSender:model.isSender];
     
     if (messageModel.redpacketType == RPRedpacketTypeAmount) {
@@ -142,7 +142,7 @@
 {
     [super setModel:model];
     
-    AnalysisRedpacketModel *messageModel = [AnalysisRedpacketModel AnalysisRedpacketWithDict:model.message.ext
+    AnalysisRedpacketModel *messageModel = [AnalysisRedpacketModel analysisRedpacketWithDict:model.message.ext
                                                                                  andIsSender:model.isSender];
     
     if (messageModel.redpacketType == RPRedpacketTypeAmount) {
