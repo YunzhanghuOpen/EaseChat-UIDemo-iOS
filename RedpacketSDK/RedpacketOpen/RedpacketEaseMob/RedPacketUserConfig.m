@@ -174,7 +174,9 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
             NSString *currentUserID = [EMClient sharedClient].currentUsername;
             NSString *conversationId = [message.ext valueForKey:RedpacketKeyRedpacketCmdToGroup];
             
-            AnalysisRedpacketModel *redpacketModel = [AnalysisRedpacketModel analysisRedpacketWithDict:message.ext andIsSender:nil];
+            AnalysisRedpacketModel *redpacketModel = [AnalysisRedpacketModel analysisRedpacketWithDict:message.ext
+                                                                                           andIsSender:0];
+            
             if ([redpacketModel.sender.userID isEqualToString:currentUserID]){
                 /** 当前用户是红包发送者 */
                 NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",redpacketModel.receiver.userName];
@@ -192,14 +194,17 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                 if (self.chatVC && isCurrentConversation){
                     
                     /** 刷新当前聊天界面 */
-                    [self.chatVC addMessageToDataSource:textMessage progress:nil];
+                    [self.chatVC addMessageToDataSource:textMessage
+                                               progress:nil];
                     /** 存入当前会话并存入数据库 */
-                    [self.chatVC.conversation insertMessage:textMessage error:nil];
+                    [self.chatVC.conversation insertMessage:textMessage
+                                                      error:nil];
                     
                 }else {
                     
                     /** 插入数据库 */
                     ConversationListController *listVc = [ChatDemoHelper shareHelper].conversationListVC;
+                    
                     if (listVc) {
                         
                         for (id <IConversationModel> model in [listVc.dataArray copy]) {
