@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, MessageCellType) {
 
 + (MessageCellType)messageCellTypeWithDict:(NSDictionary *)dict;
 
-+ (AnalysisRedpacketModel *)AnalysisRedpacketWithDict:(NSDictionary *)dict
++ (AnalysisRedpacketModel *)analysisRedpacketWithDict:(NSDictionary *)dict
                                           andIsSender:(BOOL)isSender;
 
 

@@ -8,7 +8,6 @@
 
 #import "RPRedpacketUnionHandle.h"
 #import "RPRedpacketConstValues.h"
-#import "RPRedpacketConstValues_v1.h"
 
 #define IGNORE_PUSH_MESSAGE  @"em_ignore_notification"
 
@@ -16,7 +15,7 @@
 
 //  生成通道中传输的Dict （兼容旧版本）
 + (NSDictionary *)dictWithRedpacketModel1:(RPRedpacketModel *)model
-                            isACKMessage:(BOOL)isAckMessage
+                             isACKMessage:(BOOL)isAckMessage
 {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setValue:model.redpacketID forKey:RedpacketKeyRedpacketID1];
