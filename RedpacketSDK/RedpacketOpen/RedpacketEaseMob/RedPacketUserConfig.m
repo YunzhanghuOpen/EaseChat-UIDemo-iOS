@@ -186,6 +186,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (void)handleCmdMessages:(NSArray <EMMessage *> *)aCmdMessages
 {
     for (EMMessage *message in aCmdMessages) {
+        
         EMCmdMessageBody * body = (EMCmdMessageBody *)message.body;
         
         if ([body.action isEqualToString:REDPACKET_CMD_MESSAGE]) {
@@ -197,10 +198,16 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
             NSString *conversationId = [message.ext valueForKey:RedpacketKeyRedpacketCmdToGroup];
             
             if ([senderID isEqualToString:currentUserID]){
+                
                 /** 当前用户是红包发送者 */
                 NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
+                
                 EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithText:text];
-                EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:conversationId from:message.from to:conversationId body:body1 ext:message.ext];
+                EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:conversationId
+                                                                              from:message.from
+                                                                                to:conversationId
+                                                                              body:body1
+                                                                               ext:message.ext];
                 textMessage.chatType = EMChatTypeGroupChat;
                 textMessage.isRead = YES;
                 /** 更新界面 */
