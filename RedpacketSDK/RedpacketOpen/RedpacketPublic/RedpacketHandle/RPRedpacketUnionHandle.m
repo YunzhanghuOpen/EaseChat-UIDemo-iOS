@@ -135,7 +135,7 @@
     NSString *redpacketID = [redpacketDic objectForKey:RedpacketKeyRedpacketID];
     NSAssert(redpacketID.length, @"红包ID为空，经检查字典中是否存在红包ID");
     
-    if (redpacketID.length) {
+    if (redpacketID.length == 0) {
         return nil;
     }
     
