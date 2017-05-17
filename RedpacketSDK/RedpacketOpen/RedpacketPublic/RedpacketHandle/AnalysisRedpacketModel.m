@@ -35,7 +35,7 @@
     return MessageCellTypeUnknown;
 }
 
-+ (AnalysisRedpacketModel *)AnalysisRedpacketWithDict:(NSDictionary *)dict
++ (AnalysisRedpacketModel *)analysisRedpacketWithDict:(NSDictionary *)dict
                                           andIsSender:(BOOL)isSender
 {
     MessageCellType type = [self messageCellTypeWithDict:dict];

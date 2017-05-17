@@ -34,7 +34,6 @@ typedef NS_ENUM(NSInteger, MessageCellType) {
 + (AnalysisRedpacketModel *)analysisRedpacketWithDict:(NSDictionary *)dict
                                           andIsSender:(BOOL)isSender;
 
-
 @property (nonatomic, assign, readonly) MessageCellType type;
 
 @property (nonatomic, assign, readonly) BOOL isSender;

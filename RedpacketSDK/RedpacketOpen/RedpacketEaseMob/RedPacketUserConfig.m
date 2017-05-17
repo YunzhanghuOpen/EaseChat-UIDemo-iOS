@@ -66,7 +66,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
         
         __sharedConfig__ = [[RedPacketUserConfig alloc] init];
         [RPRedpacketBridge sharedBridge].delegate = __sharedConfig__;
-        [RPRedpacketBridge sharedBridge].isDebug = YES;
+        [RPRedpacketBridge sharedBridge].isDebug = YES;//开发者调试的的时候，设置为YES，看得见日志。
         
     });
     
@@ -142,41 +142,21 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (void)handleMessage:(NSArray <EMMessage *> *)aMessages
 {
     for (EMMessage *message in aMessages) {
-        
         NSDictionary *dict = message.ext;
-        
         if (dict) {
-            
-            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+            AnalysisRedpacketModel *redpacketModel = [AnalysisRedpacketModel analysisRedpacketWithDict:message.ext andIsSender:nil];
             NSString *currentUserID = [EMClient sharedClient].currentUsername;
-            
-            BOOL isSender = [senderID isEqualToString:currentUserID];
-            
+            BOOL isSender = [redpacketModel.sender.userID isEqualToString:currentUserID];
             NSString *text;
-            
             /** 当前用户是红包发送者 */
-            
             if ([AnalysisRedpacketModel messageCellTypeWithDict:dict] == MessageCellTypeRedpaketTaken && isSender) {
-                
-                NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
-                
-                if (receiver.length == 0) {
-                    
-                    receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
-                    
-                }
-                
-                text = [NSString stringWithFormat:@"%@领取了你的红包",receiver];
-                
+                text = [NSString stringWithFormat:@"%@领取了你的红包",redpacketModel.receiver.userName];
             }
-            
             if (text && text.length > 0) {
-                
                 EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
                 message.body = body;
                 /** 把相应数据更新到数据库 */
                 [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
-                
             }
         }
     }
@@ -190,15 +170,13 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
         
         if ([body.action isEqualToString:REDPACKET_CMD_MESSAGE]) {
             
-            NSDictionary *dict = message.ext;
-            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
-            NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
             NSString *currentUserID = [EMClient sharedClient].currentUsername;
             NSString *conversationId = [message.ext valueForKey:RedpacketKeyRedpacketCmdToGroup];
             
-            if ([senderID isEqualToString:currentUserID]){
+            AnalysisRedpacketModel *redpacketModel = [AnalysisRedpacketModel analysisRedpacketWithDict:message.ext andIsSender:nil];
+            if ([redpacketModel.sender.userID isEqualToString:currentUserID]){
                 /** 当前用户是红包发送者 */
-                NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
+                NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",redpacketModel.receiver.userName];
                 EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithText:text];
                 EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:conversationId from:message.from to:conversationId body:body1 ext:message.ext];
                 textMessage.chatType = EMChatTypeGroupChat;
