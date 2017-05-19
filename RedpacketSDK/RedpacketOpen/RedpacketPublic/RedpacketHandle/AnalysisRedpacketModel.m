@@ -63,6 +63,8 @@
     _isSender = isSender;
     _redpacketOrgName = @"云账户";
     
+    _greeting = dict[RedpacketKeyRedpacketGreeting];
+    
     _redpacketType = [self redpacketTypeWithString:dict[RedpacketKeyRedapcketType]];
     //  sender
     RPUser *sender = [RPUser new];
