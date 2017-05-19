@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 #import <AlipaySDK/AlipaySDK.h>
 
+
 BOOL rp_classMethodSwizzle(Class aClass, SEL originalSelector, SEL swizzleSelector, SEL nopSelector) {
     
     Method originalMethod = class_getInstanceMethod(aClass, originalSelector);
@@ -34,37 +35,26 @@ BOOL rp_classMethodSwizzle(Class aClass, SEL originalSelector, SEL swizzleSelect
     return YES;
 }
 
-
 @implementation AppDelegate (Redpacket)
 
 + (void)load
 {
-    rp_classMethodSwizzle([self class],
-                          @selector(applicationDidBecomeActive:),
-                          @selector(rp_applicationDidBecomeActive:),
-                          @selector(rpNop_applicationDidBecomeActive:));
     
     rp_classMethodSwizzle([self class],
                           @selector(application:openURL:options:),
                           @selector(rp_application:openURL:options:),
-                          @selector(rpNop_applicationDidBecomeActive:));
+                          @selector(rp_nopAction));
     
     rp_classMethodSwizzle([self class],
                           @selector(application:openURL:sourceApplication:annotation:),
                           @selector(rp_application:openURL:sourceApplication:annotation:),
-                          @selector(rpNop_applicationDidBecomeActive:));
+                          @selector(rp_nopAction));
 }
 
 /** 空操作*/
-- (void)rpNop_applicationDidBecomeActive:(UIApplication *)application
+- (void)rp_nopAction
 {
     
-}
-
-- (void)rp_applicationDidBecomeActive:(UIApplication *)application
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"RedpacketCancelPayNotifaction" object:nil];
-    [self rp_applicationDidBecomeActive:application];
 }
 
 /** iOS9.0之前的API接口*/
@@ -87,9 +77,9 @@ BOOL rp_classMethodSwizzle(Class aClass, SEL originalSelector, SEL swizzleSelect
     }
     
     return [self rp_application:application
-                               openURL:url
-                     sourceApplication:sourceApplication
-                            annotation:annotation];;
+                        openURL:url
+              sourceApplication:sourceApplication
+                     annotation:annotation];
 }
 
 /** iOS9.0之后的API接口*/
@@ -101,12 +91,16 @@ BOOL rp_classMethodSwizzle(Class aClass, SEL originalSelector, SEL swizzleSelect
     if ([url.host isEqualToString:@"safepay"]) {
         /** 支付宝支付*/
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:@"redpacketAlipayNotifaction" object:resultDic];
+            
         }];
         
         /** 支付宝授权*/
         [[AlipaySDK defaultService] processAuthResult:url standbyCallback:^(NSDictionary *resultDic) {
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RedpacketAliAuthNotifaction" object:resultDic];
+            
         }];
         
     }

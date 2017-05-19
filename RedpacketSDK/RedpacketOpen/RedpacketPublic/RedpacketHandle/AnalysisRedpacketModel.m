@@ -59,19 +59,17 @@
          andMessageType:(MessageCellType)messageType
 {
     _type = messageType;
-    if (dict[RedpacketKeyRedpacketGreeting]) {
-        _greeting  = dict[RedpacketKeyRedpacketGreeting];
-    } else {//  兼容旧版本
-        _greeting  = dict[RedpacketKeyRedpacketGreeting];
-    }    _isSender = isSender;
+    
+    _isSender = isSender;
     _redpacketOrgName = @"云账户";
     
-    //   || 运算符后为兼容旧版本
+    _greeting  = dict[RedpacketKeyRedpacketGreeting];
+    
     if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketMember]) {
         
         _redpacketType = RPRedpacketTypeGoupMember;
         
-    }else if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketConst] || [dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketConst]) {
+    }else if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketConst]) {
         
         _redpacketType = RPRedpacketTypeAmount;
         
