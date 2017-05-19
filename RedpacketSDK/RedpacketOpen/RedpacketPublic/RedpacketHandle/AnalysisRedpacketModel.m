@@ -66,16 +66,7 @@
     }    _isSender = isSender;
     _redpacketOrgName = @"云账户";
     
-    //   || 运算符后为兼容旧版本
-    if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketMember]) {
-        
-        _redpacketType = RPRedpacketTypeGoupMember;
-        
-    }else if ([dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketConst] || [dict[RedpacketKeyRedapcketType] isEqualToString:RedpacketKeyRedpacketConst]) {
-        
-        _redpacketType = RPRedpacketTypeAmount;
-        
-    }
+    _redpacketType = [self redpacketTypeWithString:dict[RedpacketKeyRedapcketType]];
     
     //  sender
     RPUser *sender = [RPUser new];
@@ -113,27 +104,27 @@
 {
     RPRedpacketType rpType = 0;
     
-    if (type == RedpacketKeyRedpacketMember) {
+    if ([type isEqualToString:RedpacketKeyRedpacketMember]) {
         
         rpType = RPRedpacketTypeGoupMember;
         
-    }else if (type == RedpacketKeyRedpacketConst) {
+    }else if ([type isEqualToString: RedpacketKeyRedpacketConst]) {
         
         rpType = RPRedpacketTypeAmount;
         
-    }else if (type == RedpacketKeyRedpacketGroupRand) {
+    }else if ([type isEqualToString: RedpacketKeyRedpacketGroupRand]) {
     
         rpType = RPRedpacketTypeGroupRand;
         
-    }else if (type == RedpacketKeyRedpacketGroupAvg) {
+    }else if ([type isEqualToString: RedpacketKeyRedpacketGroupAvg]) {
         
         rpType = RPRedpacketTypeGroupAvg;
         
-    }else if (type == RedpacketKeyRedpacketAdvertisement) {
+    }else if ([type isEqualToString: RedpacketKeyRedpacketAdvertisement]) {
         
         rpType = RPRedpacketTypeAdvertisement;
         
-    }else if (type == RedpacketKeyRedpacketSystem) {
+    }else if ([type isEqualToString: RedpacketKeyRedpacketSystem]) {
     
         rpType = RPRedpacketTypeSystem;
         
