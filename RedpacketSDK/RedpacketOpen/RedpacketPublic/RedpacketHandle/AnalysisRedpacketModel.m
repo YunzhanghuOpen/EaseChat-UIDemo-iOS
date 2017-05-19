@@ -59,15 +59,11 @@
          andMessageType:(MessageCellType)messageType
 {
     _type = messageType;
-    if (dict[RedpacketKeyRedpacketGreeting]) {
-        _greeting  = dict[RedpacketKeyRedpacketGreeting];
-    } else {//  兼容旧版本
-        _greeting  = dict[RedpacketKeyRedpacketGreeting];
-    }    _isSender = isSender;
+    
+    _isSender = isSender;
     _redpacketOrgName = @"云账户";
     
     _redpacketType = [self redpacketTypeWithString:dict[RedpacketKeyRedapcketType]];
-    
     //  sender
     RPUser *sender = [RPUser new];
     sender.userID = dict[RedpacketKeyRedpacketSenderId];
